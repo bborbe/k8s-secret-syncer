@@ -7,9 +7,11 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 
 	libhttp "github.com/bborbe/http"
 	libk8s "github.com/bborbe/k8s"
+	"github.com/bborbe/log"
 	"github.com/bborbe/run"
 	libsentry "github.com/bborbe/sentry"
 	"github.com/bborbe/service"
@@ -67,6 +69,9 @@ func (a *application) createHTTPServer() run.Func {
 		router.Path("/healthz").Handler(libhttp.NewPrintHandler("OK"))
 		router.Path("/readiness").Handler(libhttp.NewPrintHandler("OK"))
 		router.Path("/metrics").Handler(promhttp.Handler())
+		router.Path("/setloglevel/{level}").
+			Handler(log.NewSetLoglevelHandler(ctx, log.NewLogLevelSetter(2, 5*time.Minute)))
+		router.Path("/gc").Handler(libhttp.NewGarbageCollectorHandler())
 
 		glog.V(2).Infof("starting http server listen on %s", a.Listen)
 		return libhttp.NewServer(

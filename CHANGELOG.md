@@ -11,6 +11,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 - fix: mask SentryDSN in the startup argument dump with display:"length"
+- fix: register the missing /setloglevel/{level} and /gc admin endpoints
 - docs: add a License section to the README
 
 ## v0.1.1
