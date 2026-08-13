@@ -8,7 +8,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v0.1.2
 
 - fix: mask SentryDSN in the startup argument dump with display:"length"
 - fix: register the missing /setloglevel/{level} and /gc admin endpoints
