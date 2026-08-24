@@ -5,7 +5,7 @@ go 1.27.0
 require (
 	github.com/bborbe/errors v1.5.20
 	github.com/bborbe/http v1.26.24
-	github.com/bborbe/k8s v1.14.12
+	github.com/bborbe/k8s v1.14.13
 	github.com/bborbe/log v1.6.24
 	github.com/bborbe/metrics v0.5.15
 	github.com/bborbe/run v1.9.37
@@ -25,7 +25,7 @@ require (
 require (
 	github.com/Masterminds/semver/v3 v3.5.0 // indirect
 	github.com/bborbe/argument/v2 v2.12.37 // indirect
-	github.com/bborbe/collection v1.20.23 // indirect
+	github.com/bborbe/collection v1.20.24 // indirect
 	github.com/bborbe/kv v1.21.11 // indirect
 	github.com/bborbe/math v1.4.5 // indirect
 	github.com/bborbe/parse v1.10.21 // indirect
