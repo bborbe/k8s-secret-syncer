@@ -12,6 +12,7 @@ import (
 	libhttp "github.com/bborbe/http"
 	libk8s "github.com/bborbe/k8s"
 	"github.com/bborbe/log"
+	libmetrics "github.com/bborbe/metrics"
 	"github.com/bborbe/run"
 	libsentry "github.com/bborbe/sentry"
 	"github.com/bborbe/service"
@@ -21,7 +22,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/bborbe/k8s-secret-syncer/pkg/factory"
-	libmetrics "github.com/bborbe/k8s-secret-syncer/pkg/libmetrics"
 )
 
 func main() {
@@ -30,19 +30,20 @@ func main() {
 }
 
 type application struct {
-	Listen          string            `required:"true"  arg:"listen"           env:"LISTEN"           usage:"address to listen to"`
-	SentryDSN       string            `required:"false" arg:"sentry-dsn"       env:"SENTRY_DSN"       usage:"Sentry DSN"                              display:"length"`
-	SentryProxy     string            `required:"false" arg:"sentry-proxy"     env:"SENTRY_PROXY"     usage:"Sentry Proxy"`
-	SourceNamespace libk8s.Namespace  `required:"true"  arg:"source-namespace" env:"SOURCE_NAMESPACE" usage:"source namespace"`
-	TargetNamespace libk8s.Namespace  `required:"true"  arg:"target-namespace" env:"TARGET_NAMESPACE" usage:"target namespace"`
-	SecretPrefix    string            `required:"true"  arg:"secret-prefix"    env:"SECRET_PREFIX"    usage:"only secret with this prefix are synced"`
-	Kubeconfig      string            `required:"false" arg:"kubeconfig"       env:"KUBECONFIG"       usage:"Path to k8s config"`
-	BuildGitCommit  string            `required:"false" arg:"build-git-commit" env:"BUILD_GIT_COMMIT" usage:"Build Git commit hash"                                    default:"none"`
-	BuildDate       *libtime.DateTime `required:"false" arg:"build-date"       env:"BUILD_DATE"       usage:"Build timestamp (RFC3339)"`
+	Listen          string            `required:"true"  arg:"listen"            env:"LISTEN"            usage:"address to listen to"`
+	SentryDSN       string            `required:"false" arg:"sentry-dsn"        env:"SENTRY_DSN"        usage:"Sentry DSN"                                               display:"length"`
+	SentryProxy     string            `required:"false" arg:"sentry-proxy"      env:"SENTRY_PROXY"      usage:"Sentry Proxy"`
+	SourceNamespace libk8s.Namespace  `required:"true"  arg:"source-namespace"  env:"SOURCE_NAMESPACE"  usage:"source namespace"`
+	TargetNamespace libk8s.Namespace  `required:"true"  arg:"target-namespace"  env:"TARGET_NAMESPACE"  usage:"target namespace"`
+	SecretPrefix    string            `required:"true"  arg:"secret-prefix"     env:"SECRET_PREFIX"     usage:"only secret with this prefix are synced"`
+	Kubeconfig      string            `required:"false" arg:"kubeconfig"        env:"KUBECONFIG"        usage:"Path to k8s config"`
+	BuildGitVersion string            `required:"false" arg:"build-git-version" env:"BUILD_GIT_VERSION" usage:"Build Git version (git describe --tags --always --dirty)"                  default:"dev"`
+	BuildGitCommit  string            `required:"false" arg:"build-git-commit"  env:"BUILD_GIT_COMMIT"  usage:"Build Git commit hash"                                                     default:"none"`
+	BuildDate       *libtime.DateTime `required:"false" arg:"build-date"        env:"BUILD_DATE"        usage:"Build timestamp (RFC3339)"`
 }
 
 func (a *application) Run(ctx context.Context, sentryClient libsentry.Client) error {
-	libmetrics.NewBuildInfoMetrics().SetBuildInfo(a.BuildDate)
+	libmetrics.NewBuildInfoMetrics().SetBuildInfo(a.BuildGitVersion, a.BuildGitCommit, a.BuildDate)
 
 	return service.Run(
 		ctx,
