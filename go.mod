@@ -1,6 +1,6 @@
 module github.com/bborbe/k8s-secret-syncer
 
-go 1.27.0
+go 1.27.1
 
 replace (
 	github.com/bborbe/k8s => github.com/bborbe/k8s v1.14.13
