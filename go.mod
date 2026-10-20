@@ -13,14 +13,14 @@ replace (
 
 require (
 	github.com/bborbe/errors v1.6.3
-	github.com/bborbe/http v1.26.29
-	github.com/bborbe/k8s v1.14.22
+	github.com/bborbe/http v1.26.30
+	github.com/bborbe/k8s v1.14.23
 	github.com/bborbe/log v1.7.4
 	github.com/bborbe/metrics v0.6.7
 	github.com/bborbe/run v1.11.2
 	github.com/bborbe/sentry v1.10.4
-	github.com/bborbe/service v1.10.16
-	github.com/bborbe/time v1.27.16
+	github.com/bborbe/service v1.11.0
+	github.com/bborbe/time v1.27.17
 	github.com/golang/glog v1.2.5
 	github.com/gorilla/mux v1.8.1
 	github.com/onsi/ginkgo/v2 v2.33.1
@@ -36,9 +36,9 @@ require (
 	github.com/bborbe/argument/v2 v2.13.6 // indirect
 	github.com/bborbe/collection v1.21.2 // indirect
 	github.com/bborbe/kv v1.21.18 // indirect
-	github.com/bborbe/math v1.4.14 // indirect
+	github.com/bborbe/math v1.4.15 // indirect
 	github.com/bborbe/parse v1.12.3 // indirect
-	github.com/bborbe/validation v1.5.4 // indirect
+	github.com/bborbe/validation v1.5.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
@@ -63,7 +63,7 @@ require (
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/google/gnostic-models v0.7.1 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
-	github.com/google/pprof v0.0.0-20261012231050-2af12c3f4d87 // indirect
+	github.com/google/pprof v0.0.0-20261016150608-1facf8f91b50 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -93,7 +93,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/apiextensions-apiserver v0.37.1 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
-	k8s.io/kube-openapi v0.0.0-20261007072838-e2e80c32a35f // indirect
+	k8s.io/kube-openapi v0.0.0-20261014044854-ca3452a79603 // indirect
 	k8s.io/utils v0.0.0-20260707023825-cf1189d6abe3 // indirect
 	sigs.k8s.io/json v0.0.0-20260909141634-11ed52e25bc5 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
