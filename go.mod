@@ -1,6 +1,6 @@
 module github.com/bborbe/k8s-secret-syncer
 
-go 1.27.2
+go 1.27.3
 
 replace (
 	github.com/bborbe/k8s => github.com/bborbe/k8s v1.14.19
@@ -18,7 +18,7 @@ require (
 	github.com/bborbe/log v1.7.4
 	github.com/bborbe/metrics v0.6.7
 	github.com/bborbe/run v1.11.2
-	github.com/bborbe/sentry v1.10.4
+	github.com/bborbe/sentry v1.10.5
 	github.com/bborbe/service v1.11.0
 	github.com/bborbe/time v1.27.17
 	github.com/golang/glog v1.2.5
