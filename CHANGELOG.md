@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- feat: build the image on a Kubernetes cluster with `make build BUILD_TARGET=<cluster> REF=<sha> VERSION=<tag>`, keeping the default local arm unchanged. `hack/build-cluster.sh`, `hack/cluster-alias.sh` and `hack/build-job.yaml` are vendored from `bborbe/agent-task-executor`; `check-version-tag` and `check-go-mod` stay local-arm prerequisites, since they describe the local HEAD rather than the commit the cluster builds
+- chore: bump `golang.org/x/net` to v0.62.0 to clear `make vulncheck` — GO-2026-6860 and GO-2026-6866 are newly surfaced against v0.61.0 and present on master too, so this is a pre-existing advisory rather than a change in this PR
+
 ## v0.1.19
 
 - chore: update github.com/bborbe/metrics to v0.6.8
