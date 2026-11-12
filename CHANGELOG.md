@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- feat: bump github.com/bborbe/k8s to v1.15.0, so the watcher now delivers the secrets that already exist at startup and re-lists every 5 minutes instead of only reacting to changes. A restarted pod therefore provisions its target namespace immediately rather than waiting for each source Secret to be rewritten.
+- feat: add `k8s_secret_syncer_last_update_timestamp_seconds{namespace}`, set on every successful delivery, and log each delivery as `reconcile namespace=<ns> secret=<name> action=<created|updated>`. The gauge is deliberately not pre-initialised, so an absent series means the process is gone and a zero does not fire a false staleness alert.
+
 ## v0.3.1
 
 - chore: update Go to 1.27.4 and github.com/bborbe/http to v1.26.34, github.com/bborbe/log to v1.7.9, github.com/bborbe/metrics to v0.6.12, github.com/bborbe/time to v1.27.28

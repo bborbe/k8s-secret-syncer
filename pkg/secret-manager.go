@@ -10,6 +10,7 @@ import (
 	"github.com/bborbe/errors"
 	libk8s "github.com/bborbe/k8s"
 	"github.com/golang/glog"
+	"github.com/prometheus/client_golang/prometheus"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -24,16 +25,19 @@ type SecretManager = libk8s.SecretEventProcessor
 func NewSecretManager(
 	clientset kubernetes.Interface,
 	namespace libk8s.Namespace,
+	lastUpdate *prometheus.GaugeVec,
 ) libk8s.SecretEventProcessor {
 	return &secretManager{
-		clientset: clientset,
-		namespace: namespace,
+		clientset:  clientset,
+		namespace:  namespace,
+		lastUpdate: lastUpdate,
 	}
 }
 
 type secretManager struct {
-	clientset kubernetes.Interface
-	namespace libk8s.Namespace
+	clientset  kubernetes.Interface
+	namespace  libk8s.Namespace
+	lastUpdate *prometheus.GaugeVec
 }
 
 func (s *secretManager) OnUpdate(ctx context.Context, secret corev1.Secret) error {
@@ -61,7 +65,9 @@ func (s *secretManager) OnUpdate(ctx context.Context, secret corev1.Secret) erro
 		if err != nil {
 			return errors.Wrap(ctx, err, "create secret failed")
 		}
-		glog.V(2).Infof("secret %s/%s created successful", secret.Namespace, secret.Name)
+		s.markUpdated()
+		glog.V(2).
+			Infof("reconcile namespace=%s secret=%s action=created", secret.Namespace, secret.Name)
 		return nil
 	}
 	secret.ResourceVersion = currentSecret.ResourceVersion
@@ -71,7 +77,9 @@ func (s *secretManager) OnUpdate(ctx context.Context, secret corev1.Secret) erro
 	if err != nil {
 		return errors.Wrap(ctx, err, "update secret failed")
 	}
-	glog.V(2).Infof("secret %s/%s updated successful", secret.Namespace, secret.Name)
+	s.markUpdated()
+	glog.V(2).
+		Infof("reconcile namespace=%s secret=%s action=updated", secret.Namespace, secret.Name)
 	return nil
 }
 
@@ -81,4 +89,14 @@ func (s *secretManager) OnDelete(ctx context.Context, secret corev1.Secret) erro
 	}
 	glog.V(2).Infof("secret %s/%s deleted successful", s.namespace, secret.Name)
 	return nil
+}
+
+// markUpdated records a successful delivery for this manager's target
+// namespace. A nil gauge is tolerated so callers that do not collect metrics
+// (tests) need no change.
+func (s *secretManager) markUpdated() {
+	if s.lastUpdate == nil {
+		return
+	}
+	s.lastUpdate.WithLabelValues(s.namespace.String()).SetToCurrentTime()
 }

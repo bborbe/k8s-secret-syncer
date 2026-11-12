@@ -3,7 +3,7 @@ module github.com/bborbe/k8s-secret-syncer
 go 1.27.4
 
 replace (
-	github.com/bborbe/k8s => github.com/bborbe/k8s v1.14.19
+	github.com/bborbe/k8s => github.com/bborbe/k8s v1.15.0
 	k8s.io/api => k8s.io/api v0.37.0
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.37.0
 	k8s.io/apimachinery => k8s.io/apimachinery v0.37.0
@@ -14,7 +14,7 @@ replace (
 require (
 	github.com/bborbe/errors v1.6.6
 	github.com/bborbe/http v1.26.34
-	github.com/bborbe/k8s v1.14.33
+	github.com/bborbe/k8s v1.15.0
 	github.com/bborbe/log v1.7.9
 	github.com/bborbe/metrics v0.6.12
 	github.com/bborbe/run v1.11.11
