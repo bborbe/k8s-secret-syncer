@@ -11,6 +11,7 @@ import (
 	libk8s "github.com/bborbe/k8s"
 	"github.com/bborbe/run"
 	libtime "github.com/bborbe/time"
+	"github.com/prometheus/client_golang/prometheus"
 	k8s_kubernetes "k8s.io/client-go/kubernetes"
 
 	"github.com/bborbe/k8s-secret-syncer/pkg"
@@ -21,6 +22,7 @@ func CreateSecretSyncer(
 	secretPrefix string,
 	sourceNamespace libk8s.Namespace,
 	targetNamespace libk8s.Namespace,
+	lastUpdate *prometheus.GaugeVec,
 ) run.Func {
 	return func(ctx context.Context) error {
 		clientset, err := libk8s.CreateClientset(kubeconfig)
@@ -32,6 +34,7 @@ func CreateSecretSyncer(
 			secretPrefix,
 			sourceNamespace,
 			targetNamespace,
+			lastUpdate,
 		).Watch(ctx)
 	}
 }
@@ -41,6 +44,7 @@ func CreateSecretWatcher(
 	secretPrefix string,
 	sourceNamespace libk8s.Namespace,
 	targetNamespace libk8s.Namespace,
+	lastUpdate *prometheus.GaugeVec,
 ) libk8s.SecretWatcher {
 	return libk8s.NewSecretWatcherRetry(
 		libk8s.NewSecretWatcher(
@@ -50,6 +54,7 @@ func CreateSecretWatcher(
 					pkg.NewSecretManager(
 						clientset,
 						targetNamespace,
+						lastUpdate,
 					),
 				),
 				secretPrefix,

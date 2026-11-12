@@ -19,8 +19,10 @@ import (
 	libtime "github.com/bborbe/time"
 	"github.com/golang/glog"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
+	"github.com/bborbe/k8s-secret-syncer/pkg"
 	"github.com/bborbe/k8s-secret-syncer/pkg/factory"
 )
 
@@ -45,19 +47,23 @@ type application struct {
 func (a *application) Run(ctx context.Context, sentryClient libsentry.Client) error {
 	libmetrics.NewBuildInfoMetrics().SetBuildInfo(a.BuildGitVersion, a.BuildGitCommit, a.BuildDate)
 
+	lastUpdate := pkg.NewLastUpdateTimestampGauge()
+	prometheus.MustRegister(lastUpdate)
+
 	return service.Run(
 		ctx,
-		a.createSecretSyncer(),
+		a.createSecretSyncer(lastUpdate),
 		a.createHTTPServer(),
 	)
 }
 
-func (a *application) createSecretSyncer() run.Func {
+func (a *application) createSecretSyncer(lastUpdate *prometheus.GaugeVec) run.Func {
 	return factory.CreateSecretSyncer(
 		a.Kubeconfig,
 		a.SecretPrefix,
 		libk8s.Namespace(a.SourceNamespace),
 		libk8s.Namespace(a.TargetNamespace),
+		lastUpdate,
 	)
 }
 
