@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: remove 19 stale vulnerability ignore IDs
+- ci: install Trivy from a pinned, checksum-verified release tarball so the test job stops failing on the removed `apt-key` helper
+
 ## v0.4.0
 
 - feat: bump github.com/bborbe/k8s to v1.15.0, so the watcher now delivers the secrets that already exist at startup and re-lists every 5 minutes instead of only reacting to changes. A restarted pod therefore provisions its target namespace immediately rather than waiting for each source Secret to be rewritten.
